@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { PlaneTakeoff, UserPlus, PhoneCall, Calendar, MapPin, User, Info } from 'lucide-react';
 import { SignedIn, SignedOut, UserButton, SignIn, SignUp, useUser, useAuth } from "@clerk/clerk-react";
+// for testing
+// const API_URL = "http://localhost:3000/api";
 
-const API_URL = "http://localhost:3000/api";
+
+
+// for production
+
+const API_URL= "https://server-rf9a5d8gs-ganeshs-projects-843489a7.vercel.app/api/";
 
 const SkyBuddySimple = () => {
   const { user } = useUser();
