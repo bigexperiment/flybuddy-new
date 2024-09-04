@@ -23,7 +23,7 @@ import {
 // for production
 
 const API_URL =
-  "https://server-rf9a5d8gs-ganeshs-projects-843489a7.vercel.app/api/";
+  "https://server-chi-blush.vercel.app/api/";
 
 const SkyBuddySimple = () => {
   const { user } = useUser();
