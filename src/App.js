@@ -73,18 +73,27 @@ const SkyMatesSimple = () => {
     e.preventDefault();
     try {
       const token = await getToken();
-      console.log("Submitting form data:", formData);
+      const dataToSend = {
+        name: formData.name,
+        age: parseInt(formData.age), // Ensure age is sent as a number
+        type: formData.type,
+        date: formData.date,
+        fromcity: formData.fromcity, // Match the server's field name
+        tocity: formData.tocity, // Match the server's field name
+        phone: formData.phone
+      };
+      console.log("Submitting form data:", dataToSend);
       const response = await fetch(`${API_URL}/passengers`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSend),
       });
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to add passenger");
+        throw new Error(errorData.details || "Failed to add passenger");
       }
       const newPassenger = await response.json();
       console.log("New passenger added:", newPassenger);
@@ -102,8 +111,7 @@ const SkyMatesSimple = () => {
         phone: "",
       });
       // Add a success message
-      console.log("passenger added");
-      console.log("passenger added");
+      alert("Passenger added successfully!");
     } catch (error) {
       console.error("Error adding passenger:", error);
       setError(`Failed to add passenger: ${error.message}`);
