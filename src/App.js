@@ -78,8 +78,8 @@ const SkyMatesSimple = () => {
         age: parseInt(formData.age), // Ensure age is sent as a number
         type: formData.type,
         date: formData.date,
-        fromcity: formData.fromcity, // Match the server's field name
-        tocity: formData.tocity, // Match the server's field name
+        fromCity: formData.fromcity, // Change to fromCity
+        toCity: formData.tocity, // Change to toCity
         phone: formData.phone
       };
       console.log("Submitting form data:", dataToSend);
@@ -93,6 +93,7 @@ const SkyMatesSimple = () => {
       });
       if (!response.ok) {
         const errorData = await response.json();
+        console.error("Server response:", errorData);
         throw new Error(errorData.details || "Failed to add passenger");
       }
       const newPassenger = await response.json();
@@ -106,8 +107,8 @@ const SkyMatesSimple = () => {
         name: "",
         age: "",
         date: "",
-        fromcity: "",
-        tocity: "",
+        fromcity: "", // Keep this as is for form state
+        tocity: "", // Keep this as is for form state
         phone: "",
       });
       // Add a success message
