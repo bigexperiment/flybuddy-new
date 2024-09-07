@@ -7,6 +7,8 @@ import {
   MapPin,
   User,
   Info,
+  Mail,
+  Phone,
 } from "lucide-react";
 import {
   SignedIn,
@@ -138,14 +140,8 @@ const SkyMatesSimple = () => {
     }
   };
 
-  const handleContact = (phone) => {
-    if (user) {
-      // Implement your contact logic here
-      alert(`Contacting passenger at ${phone}`);
-    } else {
-      setSignInReason("contact");
-      setShowSignIn(true);
-    }
+  const handleContact = () => {
+    window.open('/contact', '_blank');
   };
 
   const handleAddPassengerClick = () => {
@@ -170,28 +166,51 @@ const SkyMatesSimple = () => {
     return <div className="text-red-500 text-center mt-4">{error}</div>;
   }
 
+  if (window.location.pathname === '/contact') {
+    return (
+      <div className="min-h-screen flex flex-col bg-blue-50">
+        <header className="bg-blue-600 text-white py-4 px-6 shadow-lg">
+          <h1 className="text-3xl font-bold flex items-center">
+            <PlaneTakeoff className="mr-2" />
+            SkyMates.co - Contact Us
+          </h1>
+        </header>
+        <main className="flex-grow container mx-auto py-8 px-4">
+          <div className="bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h2 className="text-2xl font-semibold mb-4 text-blue-700">Contact Information</h2>
+            <p className="mb-2"><strong>Email:</strong> skymatesco@gmail.com</p>
+            <p><strong>Phone:</strong> +1 714-485-9360</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-blue-50">
       <header className="bg-blue-600 text-white py-4 px-6 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-3xl font-bold flex items-center">
+          <a href="/" className="text-3xl font-bold flex items-center hover:text-blue-200 transition duration-300">
             <PlaneTakeoff className="mr-2" />
             SkyMates.co
-          </h1>
+          </a>
           <nav className="flex items-center">
             <ul className="flex space-x-4 mr-4">
               <li>
-                <a href="#" className="hover:text-blue-200">
+                <a href="/" className="hover:text-blue-200 transition duration-300">
                   Home
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-200">
+                <a href="#about" className="hover:text-blue-200 transition duration-300">
                   About
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-blue-200">
+                <a href="/contact" className="hover:text-blue-200 transition duration-300" onClick={(e) => {
+                  e.preventDefault();
+                  handleContact();
+                }}>
                   Contact
                 </a>
               </li>
@@ -210,6 +229,18 @@ const SkyMatesSimple = () => {
           </nav>
         </div>
       </header>
+
+      <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-12 px-4 shadow-lg">
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">Welcome to SkyMates</h2>
+          <p className="text-xl mb-6">
+            Connecting travelers on long flights, reducing isolation for solo and elderly passengers.
+          </p>
+          <p className="text-lg">
+            Find your perfect travel companion and make your journey more enjoyable!
+          </p>
+        </div>
+      </div>
 
       <main className="flex-grow container mx-auto py-8 px-4">
         <div className="max-w-4xl mx-auto">
@@ -455,16 +486,43 @@ const SkyMatesSimple = () => {
         )}
       </main>
 
-      <footer className="bg-blue-800 text-white py-6">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h3 className="text-lg font-semibold flex items-center justify-center">
-              <PlaneTakeoff className="mr-2" />
-              SkyMates.co
-            </h3>
-            <p className="mt-2 text-sm">
-              Connecting travelers, one flight at a time.
-            </p>
+      <footer className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-8 px-4">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+            <div className="mb-6 md:mb-0">
+              <h3 className="text-2xl font-bold flex items-center mb-2">
+                <PlaneTakeoff className="mr-2" />
+                SkyMates.co
+              </h3>
+              <p className="text-sm text-blue-200">
+                Connecting travelers, one flight at a time.
+              </p>
+             
+            </div>
+            <div className="mb-6 md:mb-0 md:text-center">
+              <h4 className="font-semibold mb-2">About</h4>
+              <p className="text-sm text-blue-200 max-w-md">
+                An app designed to connect travelers on long flights,
+                reducing isolation for solo and elderly passengers.
+              </p>
+              <p className="text-sm text-blue-200 mt-2">
+                Add your flight today.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-2">Contact Us</h4>
+              <a href="mailto:skymatesco@gmail.com" className="text-sm text-blue-200 hover:text-white transition duration-300 flex items-center mb-2">
+                <Mail className="mr-2" size={16} />
+                skymatesco@gmail.com
+              </a>
+              <a href="tel:+17144859360" className="text-sm text-blue-200 hover:text-white transition duration-300 flex items-center">
+                <Phone className="mr-2" size={16} />
+                +1 714-485-9360
+              </a>
+            </div>
+          </div>
+          <div className="text-center text-sm text-blue-300">
+            <p>&copy; 2024 SkyMates.co. All rights reserved.</p>
           </div>
         </div>
       </footer>
