@@ -18,8 +18,12 @@ import {
   SignUp,
   useUser,
   useAuth,
+  useClerk,
 } from "@clerk/clerk-react";
 import InputMask from 'react-input-mask';
+import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons
+import { Helmet } from "react-helmet";
+
 // for testing
 // const API_URL = "http://localhost:3000/api";
 // comments
@@ -30,6 +34,7 @@ const API_URL = "https://server-chi-blush.vercel.app/api";
 const SkyMatesSimple = () => {
   const { user } = useUser();
   const { getToken } = useAuth();
+  const { openSignIn, signOut } = useClerk();
   const [passengers, setPassengers] = useState([]);
   const [error, setError] = useState(null);
   const [showSignIn, setShowSignIn] = useState(false);
@@ -44,6 +49,7 @@ const SkyMatesSimple = () => {
     phone: "",
     airlines: "", // Add this line
   });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     fetchPassengers();
@@ -162,13 +168,26 @@ const SkyMatesSimple = () => {
     return fullName;
   };
 
+  const handleSignIn = () => {
+    if (!user) {
+      openSignIn();
+    }
+  };
+
+  const handleSignOut = () => {
+    signOut();
+  };
+
   if (error) {
     return <div className="text-red-500 text-center mt-4">{error}</div>;
   }
 
   if (window.location.pathname === '/contact') {
     return (
-      <div className="min-h-screen flex flex-col bg-blue-50">
+      <div className="min-h-screen flex flex-col bg-blue-50 font-poppins">
+        <Helmet>
+          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        </Helmet>
         <header className="bg-blue-600 text-white py-4 px-6 shadow-lg">
           <h1 className="text-3xl font-bold flex items-center">
             <PlaneTakeoff className="mr-2" />
@@ -187,14 +206,24 @@ const SkyMatesSimple = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-blue-50">
+    <div className="min-h-screen flex flex-col bg-blue-50 font-poppins">
+      <Helmet>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+      </Helmet>
       <header className="bg-blue-600 text-white py-4 px-6 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
           <a href="/" className="text-3xl font-bold flex items-center hover:text-blue-200 transition duration-300">
             <PlaneTakeoff className="mr-2" />
             SkyMates.co
           </a>
-          <nav className="flex items-center">
+          {/* Hamburger menu for mobile */}
+          <div className="md:hidden">
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+            </button>
+          </div>
+          {/* Desktop menu */}
+          <nav className="hidden md:flex items-center">
             <ul className="flex space-x-4 mr-4">
               <li>
                 <a href="/" className="hover:text-blue-200 transition duration-300">
@@ -228,6 +257,44 @@ const SkyMatesSimple = () => {
             </SignedOut>
           </nav>
         </div>
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4">
+            <nav className="flex flex-col space-y-2">
+              <ul className="flex flex-col space-y-2">
+                <li>
+                  <a href="/" className="hover:text-blue-200 transition duration-300">
+                    Home
+                  </a>
+                </li>
+                <li>
+                  <a href="#about" className="hover:text-blue-200 transition duration-300">
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a href="/contact" className="hover:text-blue-200 transition duration-300" onClick={(e) => {
+                    e.preventDefault();
+                    handleContact();
+                  }}>
+                    Contact
+                  </a>
+                </li>
+              </ul>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              <SignedOut>
+                <button
+                  onClick={() => setShowSignIn(true)}
+                  className="bg-white text-blue-600 py-2 px-4 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
+                >
+                  Sign In
+                </button>
+              </SignedOut>
+            </nav>
+          </div>
+        )}
       </header>
 
       <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-12 px-4 shadow-lg">
@@ -497,7 +564,6 @@ const SkyMatesSimple = () => {
               <p className="text-sm text-blue-200">
                 Connecting travelers, one flight at a time.
               </p>
-             
             </div>
             <div className="mb-6 md:mb-0 md:text-center">
               <h4 className="font-semibold mb-2">About</h4>
@@ -508,6 +574,24 @@ const SkyMatesSimple = () => {
               <p className="text-sm text-blue-200 mt-2">
                 Add your flight today.
               </p>
+              {user ? (
+                <div className="mt-4 text-sm text-blue-200">
+                  <span className="mr-2">Hello, {user.firstName || user.username}</span>
+                  <button
+                    onClick={handleSignOut}
+                    className="text-blue-300 hover:text-white transition duration-300"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleSignIn}
+                  className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
+                >
+                  Login
+                </button>
+              )}
             </div>
             <div>
               <h4 className="font-semibold mb-2">Contact Us</h4>
@@ -521,8 +605,10 @@ const SkyMatesSimple = () => {
               </a>
             </div>
           </div>
-          <div className="text-center text-sm text-blue-300">
-            <p>&copy; 2024 SkyMates.co. All rights reserved.</p>
+          <div className="border-t border-blue-600 pt-4">
+            <p className="text-sm text-blue-300 text-center">
+              &copy; 2024 SkyMates.co. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
