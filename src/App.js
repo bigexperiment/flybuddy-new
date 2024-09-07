@@ -17,6 +17,7 @@ import {
   useUser,
   useAuth,
 } from "@clerk/clerk-react";
+import InputMask from 'react-input-mask';
 // for testing
 // const API_URL = "http://localhost:3000/api";
 // comments
@@ -61,11 +62,24 @@ const SkyMatesSimple = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (e, value = null) => {
+    let name, inputValue;
+    
+    if (e && e.target) {
+      // Regular input change
+      ({ name, value: inputValue } = e.target);
+    } else if (typeof e === 'string' && value !== null) {
+      // Phone input mask
+      name = e;
+      inputValue = value;
+    } else {
+      console.error('Invalid input in handleInputChange');
+      return;
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: name === 'age' ? (inputValue === '' ? '' : Number(inputValue)) : inputValue,
     }));
   };
 
@@ -136,6 +150,17 @@ const SkyMatesSimple = () => {
       setSignInReason("add");
       setShowSignIn(true);
     }
+  };
+
+  const formatName = (fullName) => {
+    if (!user) {
+      const names = fullName.split(' ');
+      if (names.length > 1) {
+        return names[0] + ' ' + '*'.repeat(names.slice(1).join(' ').length);
+      }
+      return fullName; // Return the full name if it's just one word
+    }
+    return fullName;
   };
 
   if (error) {
@@ -277,15 +302,21 @@ const SkyMatesSimple = () => {
                     </div>
                     <div className="flex items-center">
                       <PhoneCall className="text-gray-400 mr-2" size={20} />
-                      <input
-                        type="tel"
-                        name="phone"
-                        placeholder="Phone Number"
+                      <InputMask
+                        mask="(999) 999-9999"
                         value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                        onChange={(e) => handleInputChange('phone', e.target.value)}
+                      >
+                        {(inputProps) => (
+                          <input
+                            {...inputProps}
+                            type="tel"
+                            placeholder="(123) 456-7890"
+                            required
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                        )}
+                      </InputMask>
                     </div>
                   </div>
                   <button
@@ -341,7 +372,7 @@ const SkyMatesSimple = () => {
                             <div className="p-4">
                               <p className="font-bold text-lg text-gray-800 mb-2 flex items-center">
                                 <User className="mr-2" size={18} />
-                                {passenger.name || "N/A"}
+                                {formatName(passenger.name || "N/A")}
                                 {passenger.age ? `, ${passenger.age}` : ""}
                               </p>
                               <p className="text-gray-600 flex items-center">
