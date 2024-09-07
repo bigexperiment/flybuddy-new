@@ -40,6 +40,7 @@ const SkyMatesSimple = () => {
     fromcity: "",
     tocity: "",
     phone: "",
+    airlines: "", // Add this line
   });
 
   useEffect(() => {
@@ -94,7 +95,8 @@ const SkyMatesSimple = () => {
         date: formData.date,
         fromCity: formData.fromcity, // Change to fromCity
         toCity: formData.tocity, // Change to toCity
-        phone: formData.phone
+        phone: formData.phone,
+        airlines: formData.airlines // Add this line
       };
       console.log("Submitting form data:", dataToSend);
       const response = await fetch(`${API_URL}/passengers`, {
@@ -124,6 +126,7 @@ const SkyMatesSimple = () => {
         fromcity: "", // Keep this as is for form state
         tocity: "", // Keep this as is for form state
         phone: "",
+        airlines: "", // Add this line
       });
       // Add a success message
       alert("Passenger added successfully!");
@@ -317,6 +320,18 @@ const SkyMatesSimple = () => {
                           />
                         )}
                       </InputMask>
+                    </div>
+                    <div className="flex items-center">
+                      <PlaneTakeoff className="text-gray-400 mr-2" size={20} />
+                      <input
+                        type="text"
+                        name="airlines"
+                        placeholder="Airlines"
+                        value={formData.airlines}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
                     </div>
                   </div>
                   <button
