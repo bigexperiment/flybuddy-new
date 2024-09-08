@@ -25,11 +25,11 @@ import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons
 import { Helmet } from "react-helmet";
 
 // for testing
-// const API_URL = "http://localhost:3000/api";
+const API_URL = "http://localhost:3000/api";
 // comments
 // for production
 
-const API_URL = "https://server-chi-blush.vercel.app/api";
+// const API_URL = "https://server-chi-blush.vercel.app/api";
 
 const SkyMatesSimple = () => {
   const { user } = useUser();
@@ -44,8 +44,8 @@ const SkyMatesSimple = () => {
     name: "",
     age: "",
     date: "",
-    fromcity: "",
-    tocity: "",
+    fromCity: "",
+    toCity: "",
     phone: "",
     airlines: "", // Add this line
   });
@@ -98,13 +98,13 @@ const SkyMatesSimple = () => {
       const token = await getToken();
       const dataToSend = {
         name: formData.name,
-        age: parseInt(formData.age), // Ensure age is sent as a number
+        age: parseInt(formData.age),
         type: formData.type,
         date: formData.date,
-        fromCity: formData.fromcity, // Change to fromCity
-        toCity: formData.tocity, // Change to toCity
+        fromCity: formData.fromCity,
+        toCity: formData.toCity,
         phone: formData.phone,
-        airlines: formData.airlines // Add this line
+        airlines: formData.airlines
       };
       console.log("Submitting form data:", dataToSend);
       const response = await fetch(`${API_URL}/passengers`, {
@@ -131,8 +131,8 @@ const SkyMatesSimple = () => {
         name: "",
         age: "",
         date: "",
-        fromcity: "", // Keep this as is for form state
-        tocity: "", // Keep this as is for form state
+        fromCity: "",
+        toCity: "",
         phone: "",
         airlines: "", // Add this line
       });
@@ -381,9 +381,9 @@ const SkyMatesSimple = () => {
                       <MapPin className="text-gray-400 mr-2" size={20} />
                       <input
                         type="text"
-                        name="fromcity"
+                        name="fromCity"
                         placeholder="Departure City"
-                        value={formData.fromcity}
+                        value={formData.fromCity}
                         onChange={handleInputChange}
                         required
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -393,9 +393,9 @@ const SkyMatesSimple = () => {
                       <MapPin className="text-gray-400 mr-2" size={20} />
                       <input
                         type="text"
-                        name="tocity"
+                        name="toCity"
                         placeholder="Arrival City"
-                        value={formData.tocity}
+                        value={formData.toCity}
                         onChange={handleInputChange}
                         required
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -494,11 +494,11 @@ const SkyMatesSimple = () => {
                               </p>
                               <p className="text-gray-600 flex items-center">
                                 <MapPin className="mr-2" size={16} />
-                                From: {passenger.fromcity || "N/A"}
+                                From: {passenger.fromCity || "N/A"}
                               </p>
                               <p className="text-gray-600 flex items-center">
                                 <MapPin className="mr-2" size={16} />
-                                To: {passenger.tocity || "N/A"}
+                                To: {passenger.toCity || "N/A"}
                               </p>
                               <p className="text-gray-600 flex items-center">
                                 <PlaneTakeoff className="mr-2" size={16} />
