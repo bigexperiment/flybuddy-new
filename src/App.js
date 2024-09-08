@@ -25,11 +25,11 @@ import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons
 import { Helmet } from "react-helmet";
 
 // for testing
-const API_URL = "http://localhost:3000/api";
+// const API_URL = "http://localhost:3000/api";
 // comments
 // for production
 
-// const API_URL = "https://server-chi-blush.vercel.app/api";
+const API_URL = "https://server-chi-blush.vercel.app/api";
 
 const SkyMatesSimple = () => {
   const { user } = useUser();
