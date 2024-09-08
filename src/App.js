@@ -9,6 +9,7 @@ import {
   Info,
   Mail,
   Phone,
+  MessageSquare,
 } from "lucide-react";
 import {
   SignedIn,
@@ -47,7 +48,8 @@ const SkyMatesSimple = () => {
     fromCity: "",
     toCity: "",
     phone: "",
-    airlines: "", // Add this line
+    airlines: "",
+    comments: "",
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -104,7 +106,8 @@ const SkyMatesSimple = () => {
         fromCity: formData.fromCity,
         toCity: formData.toCity,
         phone: formData.phone,
-        airlines: formData.airlines
+        airlines: formData.airlines,
+        comments: formData.comments
       };
       console.log("Submitting form data:", dataToSend);
       const response = await fetch(`${API_URL}/passengers`, {
@@ -134,7 +137,8 @@ const SkyMatesSimple = () => {
         fromCity: "",
         toCity: "",
         phone: "",
-        airlines: "", // Add this line
+        airlines: "",
+        comments: "",
       });
       // Add a success message
       alert("Passenger added successfully!");
@@ -319,8 +323,8 @@ const SkyMatesSimple = () => {
                   <UserPlus className="mr-2" />
                   Add New Travel Mate
                 </h2>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="flex justify-center space-x-6 mb-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="flex justify-center space-x-6 mb-4">
                     {["needFriend", "beFriend"].map((type) => (
                       <label key={type} className="inline-flex items-center">
                         <input
@@ -340,67 +344,28 @@ const SkyMatesSimple = () => {
                       </label>
                     ))}
                   </div>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    <div className="flex items-center">
-                      <User className="text-gray-400 mr-2" size={20} />
-                      <input
-                        type="text"
-                        name="name"
-                        placeholder="Full Name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <Info className="text-gray-400 mr-2" size={20} />
-                      <input
-                        type="number"
-                        name="age"
-                        placeholder="Age"
-                        value={formData.age}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <Calendar className="text-gray-400 mr-2" size={20} />
-                      <input
-                        type="date"
-                        name="date"
-                        placeholder="Date"
-                        value={formData.date}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="text-gray-400 mr-2" size={20} />
-                      <input
-                        type="text"
-                        name="fromCity"
-                        placeholder="Departure City"
-                        value={formData.fromCity}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div className="flex items-center">
-                      <MapPin className="text-gray-400 mr-2" size={20} />
-                      <input
-                        type="text"
-                        name="toCity"
-                        placeholder="Arrival City"
-                        value={formData.toCity}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      { icon: User, name: "name", placeholder: "Full Name", type: "text" },
+                      { icon: Info, name: "age", placeholder: "Age", type: "number" },
+                      { icon: Calendar, name: "date", placeholder: "Date", type: "date" },
+                      { icon: MapPin, name: "fromCity", placeholder: "Departure City", type: "text" },
+                      { icon: MapPin, name: "toCity", placeholder: "Arrival City", type: "text" },
+                      { icon: PlaneTakeoff, name: "airlines", placeholder: "Airlines", type: "text" },
+                    ].map((field) => (
+                      <div key={field.name} className="flex items-center">
+                        <field.icon className="text-gray-400 mr-2" size={20} />
+                        <input
+                          type={field.type}
+                          name={field.name}
+                          placeholder={field.placeholder}
+                          value={formData[field.name]}
+                          onChange={handleInputChange}
+                          required
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                    ))}
                     <div className="flex items-center">
                       <PhoneCall className="text-gray-400 mr-2" size={20} />
                       <InputMask
@@ -419,17 +384,20 @@ const SkyMatesSimple = () => {
                         )}
                       </InputMask>
                     </div>
-                    <div className="flex items-center">
-                      <PlaneTakeoff className="text-gray-400 mr-2" size={20} />
-                      <input
-                        type="text"
-                        name="airlines"
-                        placeholder="Airlines"
-                        value={formData.airlines}
+                  </div>
+                  <div className="flex items-center">
+                    <MessageSquare className="text-gray-400 mr-2 self-start mt-2" size={20} />
+                    <div className="w-full">
+                      <label htmlFor="comments" className="block text-sm font-medium text-gray-700 mb-1">Comments/Notes (Optional)</label>
+                      <textarea
+                        id="comments"
+                        name="comments"
+                        rows="3"
+                        value={formData.comments}
                         onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                        placeholder="Any additional comments or notes"
+                      ></textarea>
                     </div>
                   </div>
                   <button
