@@ -107,6 +107,7 @@ const SkyMatesSimple = () => {
         fromCity: formData.fromCity,
         toCity: formData.toCity,
         phone: formData.phone,
+        email: user.primaryEmailAddress.emailAddress, // Add this line
         airlines: formData.airlines,
         comments: formData.comments
       };
