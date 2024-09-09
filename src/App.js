@@ -52,6 +52,7 @@ const SkyMatesSimple = () => {
     comments: "",
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showContactPopup, setShowContactPopup] = useState(false);
 
   useEffect(() => {
     fetchPassengers();
@@ -151,7 +152,7 @@ const SkyMatesSimple = () => {
   };
 
   const handleContact = () => {
-    window.open('/contact', '_blank');
+    setShowContactPopup(true);
   };
 
   const handleAddPassengerClick = () => {
@@ -473,7 +474,7 @@ const SkyMatesSimple = () => {
                                 Airlines: {passenger.airlines || "N/A"}
                               </p>
                               <button
-                                onClick={() => handleContact(passenger.phone)}
+                                onClick={handleContact}
                                 className="mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 flex items-center justify-center w-full"
                               >
                                 <PhoneCall className="mr-2" size={16} />
@@ -518,6 +519,10 @@ const SkyMatesSimple = () => {
               </button>
             </div>
           </div>
+        )}
+
+        {showContactPopup && (
+          <ContactPopup onClose={() => setShowContactPopup(false)} />
         )}
       </main>
 
@@ -583,5 +588,34 @@ const SkyMatesSimple = () => {
     </div>
   );
 };
+
+const ContactPopup = ({ onClose }) => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+      <h2 className="text-2xl font-semibold mb-4 text-blue-700">Contact Us</h2>
+      <p className="mb-4 text-gray-600">
+        Please contact us to get connected to the passenger.
+      </p>
+      <p className="mb-2 flex items-center">
+        <Mail className="mr-2" size={16} />
+        <a href="mailto:skymatesco@gmail.com" className="text-blue-600 hover:underline">
+          skymatesco@gmail.com
+        </a>
+      </p>
+      <p className="mb-4 flex items-center">
+        <Phone className="mr-2" size={16} />
+        <a href="tel:+17144859360" className="text-blue-600 hover:underline">
+          +1 714-485-9360
+        </a>
+      </p>
+      <button
+        onClick={onClose}
+        className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+);
 
 export default SkyMatesSimple;
