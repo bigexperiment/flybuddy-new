@@ -24,6 +24,7 @@ import {
 import InputMask from 'react-input-mask';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import icons
 import { Helmet } from "react-helmet";
+import { parseISO, isWithinInterval } from 'date-fns';
 
 // for testing
 // const API_URL = "http://localhost:3000/api";
@@ -53,6 +54,7 @@ const SkyMatesSimple = () => {
   });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showContactPopup, setShowContactPopup] = useState(false);
+  const [dateFilter, setDateFilter] = useState({ start: "", end: "" });
 
   useEffect(() => {
     fetchPassengers();
@@ -182,6 +184,22 @@ const SkyMatesSimple = () => {
 
   const handleSignOut = () => {
     signOut();
+  };
+
+  const filterPassengersByDateRange = (passenger) => {
+    if (!dateFilter.start && !dateFilter.end) return true;
+    const passengerDate = parseISO(passenger.date);
+    const startDate = dateFilter.start ? parseISO(dateFilter.start) : null;
+    const endDate = dateFilter.end ? parseISO(dateFilter.end) : null;
+
+    if (startDate && endDate) {
+      return isWithinInterval(passengerDate, { start: startDate, end: endDate });
+    } else if (startDate) {
+      return passengerDate >= startDate;
+    } else if (endDate) {
+      return passengerDate <= endDate;
+    }
+    return true;
   };
 
   if (error) {
@@ -425,6 +443,25 @@ const SkyMatesSimple = () => {
 
           {/* Passenger Lists */}
           <div className="space-y-12">
+            <DateFilter dateFilter={dateFilter} setDateFilter={setDateFilter} />
+            {(dateFilter.start || dateFilter.end) && (
+              <div className="mb-4 p-2 bg-blue-100 text-blue-800 rounded-md flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <span className="mb-2 sm:mb-0">
+                  Showing results for: 
+                  {dateFilter.start && dateFilter.end
+                    ? `${dateFilter.start} to ${dateFilter.end}`
+                    : dateFilter.start
+                    ? `From ${dateFilter.start}`
+                    : `Until ${dateFilter.end}`}
+                </span>
+                <button
+                  onClick={() => setDateFilter({ start: "", end: "" })}
+                  className="text-blue-600 hover:text-blue-800 self-start sm:self-auto"
+                >
+                  Clear filter
+                </button>
+              </div>
+            )}
             {["beFriend", "needFriend"].map((groupType) => (
               <div
                 key={groupType}
@@ -442,11 +479,13 @@ const SkyMatesSimple = () => {
                       : "Looking for a Travel Mate"}
                   </h2>
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {passengers.filter(
-                      (passenger) => passenger.type === groupType
-                    ).length > 0 ? (
+                    {passengers
+                      .filter((passenger) => passenger.type === groupType)
+                      .filter(filterPassengersByDateRange)
+                      .length > 0 ? (
                       passengers
                         .filter((passenger) => passenger.type === groupType)
+                        .filter(filterPassengersByDateRange)
                         .map((passenger) => (
                           <div
                             key={passenger.id}
@@ -486,7 +525,9 @@ const SkyMatesSimple = () => {
                         ))
                     ) : (
                       <div className="col-span-full text-gray-500 text-center py-4">
-                        No passengers available in this category.
+                        {dateFilter.start || dateFilter.end
+                          ? `No passengers available for the selected date range in this category.`
+                          : "No passengers available in this category."}
                       </div>
                     )}
                   </div>
@@ -590,12 +631,57 @@ const SkyMatesSimple = () => {
   );
 };
 
+const DateFilter = ({ dateFilter, setDateFilter }) => (
+  <div className="mb-6">
+    <label className="block text-sm font-medium text-gray-700 mb-2">
+      Filter by Date Range
+    </label>
+    <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4">
+      <div className="flex-1 mb-2 sm:mb-0">
+        <label htmlFor="startDate" className="block text-xs text-gray-500 mb-1">Start Date</label>
+        <div className="flex items-center">
+          <Calendar className="text-gray-400 mr-2" size={20} />
+          <input
+            type="date"
+            id="startDate"
+            value={dateFilter.start}
+            onChange={(e) => setDateFilter(prev => ({ ...prev, start: e.target.value }))}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+      <div className="flex-1">
+        <label htmlFor="endDate" className="block text-xs text-gray-500 mb-1">End Date</label>
+        <div className="flex items-center">
+          <Calendar className="text-gray-400 mr-2" size={20} />
+          <input
+            type="date"
+            id="endDate"
+            value={dateFilter.end}
+            onChange={(e) => setDateFilter(prev => ({ ...prev, end: e.target.value }))}
+            min={dateFilter.start}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+      </div>
+    </div>
+    {(dateFilter.start || dateFilter.end) && (
+      <button
+        onClick={() => setDateFilter({ start: "", end: "" })}
+        className="mt-2 text-blue-600 hover:text-blue-800 text-sm"
+      >
+        Clear filter
+      </button>
+    )}
+  </div>
+);
+
 const ContactPopup = ({ onClose }) => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
     <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
       <h2 className="text-2xl font-semibold mb-4 text-blue-700">Contact Us</h2>
       <p className="mb-4 text-gray-600">
-        Please contact us to get connected to the passenger.
+        Please contact us to get connected to this passenger.
       </p>
       <p className="mb-2 flex items-center">
         <Mail className="mr-2" size={16} />
