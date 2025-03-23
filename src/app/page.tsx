@@ -1,103 +1,170 @@
-import Image from "next/image";
+import Link from "next/link";
+import { FaPlane, FaUserFriends, FaCheckCircle } from 'react-icons/fa';
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="container mx-auto px-4 py-8">
+      {/* Hero Section */}
+      <section className="text-center py-16 md:py-24">
+        <div className="max-w-3xl mx-auto">
+          <FaPlane className="text-blue-600 text-5xl mx-auto mb-6" />
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            SkyMates: Connecting Nepali Elderly Travelers with Compassionate Companions ✈️
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Ensuring no elder travels alone. Find a travel companion who speaks your language and understands your culture.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link href="/add" className="bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors">
+              Add New Travel Mate
+            </Link>
+            <Link href="/travel-mates" className="bg-gray-100 text-gray-800 px-6 py-3 rounded-md font-medium hover:bg-gray-200 transition-colors">
+              Find Travel Mates
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-16 bg-gray-50 rounded-xl">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-sm text-center">
+              <div className="inline-flex items-center justify-center bg-blue-100 text-blue-600 w-12 h-12 rounded-full mb-4">
+                <span className="text-xl font-bold">1</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Sign Up</h3>
+              <p className="text-gray-600">
+                Create a profile with your travel details and specify whether you need a companion or can offer help.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm text-center">
+              <div className="inline-flex items-center justify-center bg-blue-100 text-blue-600 w-12 h-12 rounded-full mb-4">
+                <span className="text-xl font-bold">2</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Find a Match</h3>
+              <p className="text-gray-600">
+                Browse available travelers and companions based on travel dates and routes.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-sm text-center">
+              <div className="inline-flex items-center justify-center bg-blue-100 text-blue-600 w-12 h-12 rounded-full mb-4">
+                <span className="text-xl font-bold">3</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Connect</h3>
+              <p className="text-gray-600">
+                Contact your potential travel mate, coordinate details, and enjoy a stress-free journey.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Why Choose SkyMates?</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="flex items-start">
+              <FaCheckCircle className="text-green-500 text-xl mt-1 mr-3 flex-shrink-0" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Cultural Connection</h3>
+                <p className="text-gray-600">
+                  Travel with someone who speaks your language and understands your customs.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <FaCheckCircle className="text-green-500 text-xl mt-1 mr-3 flex-shrink-0" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Peace of Mind</h3>
+                <p className="text-gray-600">
+                  Family members can rest easy knowing their loved ones aren't traveling alone.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <FaCheckCircle className="text-green-500 text-xl mt-1 mr-3 flex-shrink-0" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Community-Driven</h3>
+                <p className="text-gray-600">
+                  Our service is built on the spirit of community help and cultural solidarity.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start">
+              <FaCheckCircle className="text-green-500 text-xl mt-1 mr-3 flex-shrink-0" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Completely Free</h3>
+                <p className="text-gray-600">
+                  No fees, commissions, or hidden costs. SkyMates is a free community service.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About SkyMates */}
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-8">
+          <div className="md:w-1/2">
+            <h2 className="text-3xl font-bold mb-4">Our Story</h2>
+            <p className="text-gray-600 mb-4">
+              SkyMates was born from a personal experience that many Nepali families share. 
+              We recognized the challenges elderly travelers face when navigating international 
+              flights and created a community-based solution.
+            </p>
+            <p className="text-gray-600 mb-6">
+              Our platform connects those who need assistance with compassionate travel 
+              companions who share the same language and cultural background.
+            </p>
+            <Link 
+              href="/about" 
+              className="inline-flex items-center text-blue-600 font-medium hover:text-blue-800"
+            >
+              Learn more about our mission
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </Link>
+          </div>
+          <div className="md:w-1/2">
+            <div className="bg-gray-100 p-6 rounded-lg">
+              <blockquote className="italic text-gray-700 mb-4">
+                "SkyMates helped my mother travel from Kathmandu to Boston with a kind student 
+                who was going to the same city. The peace of mind it gave our family was priceless."
+              </blockquote>
+              <div className="flex items-center">
+                <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                  RS
+                </div>
+                <div className="ml-3">
+                  <p className="font-medium">Ramesh Shrestha</p>
+                  <p className="text-sm text-gray-500">Boston, USA</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="bg-blue-600 text-white rounded-xl p-8 text-center my-16">
+        <h2 className="text-3xl font-bold mb-4">Ready to find your SkyMate?</h2>
+        <p className="text-xl mb-6 max-w-2xl mx-auto">
+          Join our community today and make travel more comfortable for yourself or help an elder in need.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link href="/add" className="bg-white text-blue-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition-colors">
+            Add New Travel Mate
+          </Link>
+          <Link href="/travel-mates" className="bg-blue-700 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-800 transition-colors">
+            Find Travel Mates
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
