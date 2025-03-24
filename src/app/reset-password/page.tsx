@@ -1,12 +1,32 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { FaLock, FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
 
-export default function ResetPasswordPage() {
+// Loading component for Suspense fallback
+function LoadingState() {
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="text-center">
+          <div className="mx-auto w-[120px] h-[40px] bg-gray-200 animate-pulse rounded"></div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Loading...
+          </h2>
+          <div className="flex justify-center mt-4">
+            <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main content component that uses useSearchParams
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   
@@ -257,7 +277,7 @@ export default function ResetPasswordPage() {
                   />
                 </div>
                 {errors.confirmPassword && (
-                  <p className="mt-2 text-sm text-red-600" id="confirmPassword-error">
+                  <p className="mt-2 text-sm text-red-600" id="confirm-password-error">
                     {errors.confirmPassword}
                   </p>
                 )}
@@ -267,24 +287,43 @@ export default function ResetPasswordPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Resetting...' : 'Reset Password'}
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Resetting Password...
+                    </>
+                  ) : (
+                    'Reset Password'
+                  )}
                 </button>
               </div>
             </form>
-            
-            <div className="mt-6 flex items-center justify-center">
-              <Link 
-                href="/login" 
-                className="font-medium text-blue-600 hover:text-blue-500 flex items-center"
-              >
-                <FaArrowLeft className="mr-2" /> Back to login
-              </Link>
-            </div>
+          </div>
+          
+          <div className="mt-6 text-center">
+            <Link 
+              href="/login" 
+              className="font-medium text-blue-600 hover:text-blue-500 flex items-center justify-center"
+            >
+              <FaArrowLeft className="mr-2" /> Back to Login
+            </Link>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+// Main component that uses Suspense
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<LoadingState />}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 } 
