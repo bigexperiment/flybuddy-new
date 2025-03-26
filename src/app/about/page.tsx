@@ -46,7 +46,7 @@ export default function AboutPage() {
                   and the student had a meaningful experience while helping someone from their culture.
                 </p>
                 <p className="text-gray-600 mt-4">
-                  This experience highlighted a gap: there was no dedicated platform to connect travelers 
+                  This experience highlighted a gap- there was no dedicated platform to connect travelers 
                   who need assistance with willing companions traveling the same route. SkyMates was 
                   founded to fill this gap, initially focusing on the Nepali community where language and 
                   cultural barriers can make international travel particularly challenging for older adults.
