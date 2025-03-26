@@ -25,9 +25,20 @@ const publicPaths = [
 const isPublic = createRouteMatcher(publicPaths);
 
 export default clerkMiddleware((auth, req) => {
-  // Allow public routes without authentication
-  if (isPublic(req)) {
-    return;
+  try {
+    // Allow public routes without authentication
+    if (isPublic(req)) {
+      return;
+    }
+
+    // Add debug logging in production
+    if (process.env.NODE_ENV === 'production') {
+      console.log('Middleware processing request:', req.url);
+    }
+  } catch (error) {
+    console.error('Clerk middleware error:', error);
+    // Still throw the error to maintain Clerk's error handling
+    throw error;
   }
 });
 
